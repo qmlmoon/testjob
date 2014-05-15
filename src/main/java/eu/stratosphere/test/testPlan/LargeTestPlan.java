@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import eu.stratosphere.api.java.record.io.avro.AvroRecordInputFormat;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.specific.SpecificDatumWriter;
@@ -31,7 +32,6 @@ import eu.stratosphere.api.java.record.io.CsvInputFormat;
 import eu.stratosphere.api.java.record.io.CsvOutputFormat;
 import eu.stratosphere.api.java.record.io.FileOutputFormat;
 import eu.stratosphere.api.java.record.io.TextInputFormat;
-import eu.stratosphere.api.java.record.io.avro.AvroInputFormat;
 import eu.stratosphere.api.java.record.operators.CoGroupOperator;
 import eu.stratosphere.api.java.record.operators.CrossOperator;
 import eu.stratosphere.api.java.record.operators.JoinOperator;
@@ -41,7 +41,7 @@ import eu.stratosphere.client.LocalExecutor;
 import eu.stratosphere.compiler.PactCompiler;
 import eu.stratosphere.configuration.Configuration;
 import eu.stratosphere.hadoopcompatibility.datatypes.WritableWrapper;
-import eu.stratosphere.nephele.client.JobExecutionResult;
+import eu.stratosphere.api.common.JobExecutionResult;
 import eu.stratosphere.types.BooleanValue;
 import eu.stratosphere.types.DoubleValue;
 import eu.stratosphere.types.FloatValue;
@@ -376,7 +376,7 @@ public class LargeTestPlan implements Program, ProgramDescription {
 		// BEGIN: TEST 5 - Usage of AvroInputFormat
 
 		// extract orders from avro file
-		FileDataSource ordersAvroInputSource = new FileDataSource(new AvroInputFormat(), orderAvroFile);
+		FileDataSource ordersAvroInputSource = new FileDataSource(new AvroRecordInputFormat(), orderAvroFile);
 
 		// Extract keys
 		MapOperator extractKeys = MapOperator.builder(FilterFirstFieldIntKey.class).input(ordersAvroInputSource).build();
